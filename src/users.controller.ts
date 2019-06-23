@@ -15,23 +15,20 @@ export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Get()
-  getAllUsers(@Response() res) {
-    this.usersService
-      .getAllUsers()
-      .then(users => res.status(HttpStatus.OK).json(users));
+  async getAllUsers(@Response() res) {
+    const users = await this.usersService.getAllUsers();
+    res.status(HttpStatus.OK).json(users);
   }
 
   @Get('/:id')
-  getUser(@Response() res, @Param('id') id) {
-    const user = this.usersService
-      .getUser(+id)
-      .then(user => res.status(HttpStatus.OK).json(user));
+  async getUser(@Response() res, @Param('id') id) {
+    const user = await this.usersService.getUser(+id);
+    res.status(HttpStatus.OK).json(user);
   }
 
   @Post()
-  addUser(@Response() res, @Body('user') user) {
-    this.usersService
-      .addUser(user)
-      .then(msg => res.status(HttpStatus.CREATED).json(msg));
+  async addUser(@Response() res, @Body('user') user) {
+    const msg = await this.usersService.addUser(user);
+    res.status(HttpStatus.CREATED).json(msg);
   }
 }
