@@ -7,6 +7,7 @@ import {
   Request,
   Body,
   HttpStatus,
+  Header
 } from '@nestjs/common';
 import { UsersService } from 'src/users.service';
 
@@ -20,13 +21,14 @@ export class UsersController {
     res.status(HttpStatus.OK).json(users);
   }
 
-  @Get('/:id')
+  @Get(':id')
   async getUser(@Response() res, @Param('id') id) {
     const user = await this.usersService.getUser(+id);
     res.status(HttpStatus.OK).json(user);
   }
 
   @Post()
+  @Header('Cache-Control', 'none')
   async addUser(@Response() res, @Body('user') user) {
     const msg = await this.usersService.addUser(user);
     res.status(HttpStatus.CREATED).json(msg);
